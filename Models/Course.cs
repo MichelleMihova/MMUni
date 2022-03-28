@@ -6,11 +6,11 @@ namespace MMUni.Models
     {
         public Course()
         {
-            this.Students = new List<Student>();
+            this.StudentCourses = new List<StudentCourse>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Student> Students { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
     }
 }

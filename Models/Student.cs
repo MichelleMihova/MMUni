@@ -7,7 +7,7 @@ namespace MMUni.Models
     {
         public Student()
         {
-            this.Courses = new List<Course>();
+            this.StudentCourses = new List<StudentCourse>();
         }
 
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace MMUni.Models
         public string LastName { get; set; }
         public string Town { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
 
     }
 }
