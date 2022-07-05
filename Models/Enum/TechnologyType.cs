@@ -1,6 +1,6 @@
 ﻿namespace MMUni.Models.Enum
 {
-    public enum TechnologyType
+    public enum CategoryType
     {
         Unknown = 0,
         CSharp = 1,

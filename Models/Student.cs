@@ -9,8 +9,8 @@ namespace MMUni.Models
     {
         public Student()
         {
-            this.CompleatedCourses = new List<StudentCourse>();
-            this.StudentLearningObjects = new List<StudentLearningObject>();
+            this.CompleatedPrograms = new List<StudentProgram>();
+            this.StudentCourses = new List<StudentCourse>();
         }
 
         public int Id { get; set; }
@@ -21,12 +21,12 @@ namespace MMUni.Models
         public string Email { get; set; }
         public string Town { get; set; }
         public DateTime DateOfBirth { get; set; }
-        [ForeignKey("LearningObject")]
-        public int CurrenCourseId { get; set; }
-        public LearningObject CurrentCourse { get; set; }
+        [ForeignKey("Course")]
+        //public int CurrenCourseId { get; set; }
+        public Course CurrentCourse { get; set; }
 
         //Many to many relation
-        public ICollection<StudentCourse> CompleatedCourses { get; set; }
-        public ICollection<StudentLearningObject> StudentLearningObjects { get; set; }
+        public ICollection<StudentProgram> CompleatedPrograms { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
     }
 }

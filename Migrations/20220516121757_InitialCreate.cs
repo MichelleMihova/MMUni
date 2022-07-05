@@ -8,7 +8,7 @@ namespace MMUni.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "Programs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -18,7 +18,7 @@ namespace MMUni.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.PrimaryKey("PK_Programs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,20 +131,49 @@ namespace MMUni.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryType = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Signature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParetntID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NextCourseSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SkippingCourseSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SkipCourse = table.Column<bool>(type: "bit", nullable: false),
+                    ProgramId = table.Column<int>(type: "int", nullable: true),
+                    Exam = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExamGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FinalHomeworkGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LearningObjects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TechnologyType = table.Column<int>(type: "int", nullable: false),
+                    CategoryType = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SkipCourse = table.Column<bool>(type: "bit", nullable: false),
-                    ParetntID = table.Column<int>(type: "int", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    Exam = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExamGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    FinalHomeworkGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    VideoLessons = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReadingLessons = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Assignments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssignmentGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,32 +182,6 @@ namespace MMUni.Migrations
                         name: "FK_LearningObjects_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lectures",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TechnologyType = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VideoLessons = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReadingLessons = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Assignments = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AssignmentGrade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LearningObjectId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lectures", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Lectures_LearningObjects_LearningObjectId",
-                        column: x => x.LearningObjectId,
-                        principalTable: "LearningObjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -189,20 +192,24 @@ namespace MMUni.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryType = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Signature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParetntID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NexrCourseSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NextSkippingSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Assignment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Grade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsPassed = table.Column<bool>(type: "bit", nullable: false),
-                    TechnologyType = table.Column<int>(type: "int", nullable: false),
-                    Assignment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LearningObjectId = table.Column<int>(type: "int", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SkippingAssignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SkippingAssignments_LearningObjects_LearningObjectId",
-                        column: x => x.LearningObjectId,
-                        principalTable: "LearningObjects",
+                        name: "FK_SkippingAssignments_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -219,17 +226,16 @@ namespace MMUni.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Town = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CurrenCourseId = table.Column<int>(type: "int", nullable: false),
-                    CurrentCourseId = table.Column<int>(type: "int", nullable: true),
+                    Course = table.Column<int>(type: "int", nullable: true),
                     SkippingAssignmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_LearningObjects_CurrentCourseId",
-                        column: x => x.CurrentCourseId,
-                        principalTable: "LearningObjects",
+                        name: "FK_Students_Courses_Course",
+                        column: x => x.Course,
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -249,7 +255,7 @@ namespace MMUni.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentCourses", x => new { x.StudentId, x.CourseId });
+                    table.PrimaryKey("PK_StudentCourses", x => new { x.CourseId, x.StudentId });
                     table.ForeignKey(
                         name: "FK_StudentCourses_Courses_CourseId",
                         column: x => x.CourseId,
@@ -265,23 +271,23 @@ namespace MMUni.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StudentLearningObjects",
+                name: "StudentProgram",
                 columns: table => new
                 {
                     StudentId = table.Column<int>(type: "int", nullable: false),
-                    LearningObjectId = table.Column<int>(type: "int", nullable: false)
+                    ProgramId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentLearningObjects", x => new { x.LearningObjectId, x.StudentId });
+                    table.PrimaryKey("PK_StudentProgram", x => new { x.StudentId, x.ProgramId });
                     table.ForeignKey(
-                        name: "FK_StudentLearningObjects_LearningObjects_LearningObjectId",
-                        column: x => x.LearningObjectId,
-                        principalTable: "LearningObjects",
+                        name: "FK_StudentProgram_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StudentLearningObjects_Students_StudentId",
+                        name: "FK_StudentProgram_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -289,34 +295,35 @@ namespace MMUni.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Courses_ProgramId",
+                table: "Courses",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LearningObjects_CourseId",
                 table: "LearningObjects",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lectures_LearningObjectId",
-                table: "Lectures",
-                column: "LearningObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SkippingAssignments_LearningObjectId",
+                name: "IX_SkippingAssignments_CourseId",
                 table: "SkippingAssignments",
-                column: "LearningObjectId");
+                column: "CourseId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentCourses_CourseId",
+                name: "IX_StudentCourses_StudentId",
                 table: "StudentCourses",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentLearningObjects_StudentId",
-                table: "StudentLearningObjects",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_CurrentCourseId",
+                name: "IX_StudentProgram_ProgramId",
+                table: "StudentProgram",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_Course",
                 table: "Students",
-                column: "CurrentCourseId");
+                column: "Course");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_SkippingAssignmentId",
@@ -327,7 +334,7 @@ namespace MMUni.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Lectures");
+                name: "LearningObjects");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
@@ -339,7 +346,7 @@ namespace MMUni.Migrations
                 name: "StudentCourses");
 
             migrationBuilder.DropTable(
-                name: "StudentLearningObjects");
+                name: "StudentProgram");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -363,10 +370,10 @@ namespace MMUni.Migrations
                 name: "SkippingAssignments");
 
             migrationBuilder.DropTable(
-                name: "LearningObjects");
+                name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Programs");
         }
     }
 }

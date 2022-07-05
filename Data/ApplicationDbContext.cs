@@ -13,13 +13,13 @@ namespace MMUni.Data
 
         }
 
+        public DbSet<Models.Program> Programs { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<LearningObject> LearningObjects { get; set; }
-        public DbSet<Lecture> Lectures { get; set; }
         public DbSet<SkippingAssignment> SkippingAssignments { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentProgram> StudentProgram { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
-        public DbSet<StudentLearningObject> StudentLearningObjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,27 +30,27 @@ namespace MMUni.Data
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(x => x.UserId);
 
-            builder.Entity<StudentLearningObject>()
-                .HasKey( slo => new { slo.LearningObjectId, slo.StudentId});
-            builder.Entity<StudentLearningObject>()
+            builder.Entity<StudentCourse>()
+                .HasKey( slo => new { slo.CourseId, slo.StudentId});
+            builder.Entity<StudentCourse>()
                 .HasOne(slo => slo.Student)
-                .WithMany(s => s.StudentLearningObjects)
+                .WithMany(s => s.StudentCourses)
                 .HasForeignKey (slo => slo.StudentId);
-            builder.Entity<StudentLearningObject>()
-                .HasOne(slo => slo.LearningObject)
-                .WithMany(lo => lo.StudentLearningObjects)
-                .HasForeignKey(slo => slo.LearningObjectId);
+            builder.Entity<StudentCourse>()
+                .HasOne(slo => slo.Course)
+                .WithMany(lo => lo.StudentCourses)
+                .HasForeignKey(slo => slo.CourseId);
 
-            builder.Entity<StudentCourse>()
-                .HasKey(sc => new { sc.StudentId, sc.CourseId });
-            builder.Entity<StudentCourse>()
+            builder.Entity<StudentProgram>()
+                .HasKey(sc => new { sc.StudentId, sc.ProgramId });
+            builder.Entity<StudentProgram>()
                 .HasOne(sc => sc.Student)
-                .WithMany(s => s.CompleatedCourses)
+                .WithMany(s => s.CompleatedPrograms)
                 .HasForeignKey(sc => sc.StudentId);
-            builder.Entity<StudentCourse>()
-                .HasOne(sc => sc.Course)
-                .WithMany(c => c.StudentCourses)
-                .HasForeignKey(sc => sc.CourseId);
+            builder.Entity<StudentProgram>()
+                .HasOne(sc => sc.Program)
+                .WithMany(c => c.StudentProgram)
+                .HasForeignKey(sc => sc.ProgramId);
         }
     }
 }
